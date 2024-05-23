@@ -1,0 +1,10 @@
+// 修改组件库内部的样式
+// 解决在相关的vue中无法直接通过类名修改样式的问题
+// 哪里需要添加自定义属性，就把类名加上
+// 在组件内需要改样式的父元素加上这个类名
+.m-choose-icon-dialog-body-height {
+    .el-dialog__body {
+        height: 500px;
+        overflow-y: scroll;
+    }
+}

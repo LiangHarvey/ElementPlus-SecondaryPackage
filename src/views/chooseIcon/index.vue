@@ -8,7 +8,6 @@ let visible = ref<boolean>(false)
 
 <template>
     <div class="">
-        {{ visible }}
         <m-choose-icon title="选择图标" v-model:visible="visible">
             选择图标
         </m-choose-icon>
