@@ -4,9 +4,10 @@ import chooseIcon from './chooseIcon/index.ts'
 import trend from './trend/index.ts'
 import notification from './notification/index.ts'
 import list from './list/index.ts'
+import menu from './menu/index.ts'
 import { App } from 'vue'
 
-export const components = [chooseArea, chooseIcon, trend, notification, list]
+export const components = [chooseArea, chooseIcon, trend, notification, list, menu]
 
 // 去使用每个组件中的installapp
 export default {
