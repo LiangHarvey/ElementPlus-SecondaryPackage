@@ -5,8 +5,6 @@ import NavHeader from './navHeader/index.vue'
 
 const isCollapse = ref(false)
 
-
-
 </script>
 
 <template>
