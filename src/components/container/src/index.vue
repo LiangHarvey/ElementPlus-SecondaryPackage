@@ -8,7 +8,6 @@ const isCollapse = ref(false)
 </script>
 
 <template>
-
     <el-container>
         <el-aside width="auto">
             <nav-aside :collapse="isCollapse"></nav-aside>
