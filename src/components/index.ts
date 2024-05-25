@@ -7,6 +7,7 @@ import list from './list/index.ts'
 import menu from './menu/index.ts'
 import { App } from 'vue'
 
+// 哪些install函数需要被use
 export const components = [chooseArea, chooseIcon, trend, notification, list, menu]
 
 // 去使用每个组件中的installapp
