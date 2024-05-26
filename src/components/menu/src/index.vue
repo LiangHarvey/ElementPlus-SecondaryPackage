@@ -78,6 +78,8 @@ const props = defineProps({
 
     svg {
         margin-right: 5px;
+        width: 1em;
+        height: 1em;
     }
 }
 </style>
