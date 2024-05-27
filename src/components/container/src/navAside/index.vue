@@ -29,7 +29,7 @@ const data = [
     {
         icon: "ElementPlus",
         name: "图标选择器",
-        index: "/choose",
+        index: "/chooseIcon",
     },
     {
         icon: "Location",
@@ -39,7 +39,7 @@ const data = [
     {
         icon: "Position",
         name: "城市选择",
-        index: "/citypicker",
+        index: "/chooseCity",
     },
     {
         icon: "Sort",
@@ -69,7 +69,7 @@ const data = [
     {
         icon: "Timer",
         name: "时间选择",
-        index: "/timepicker",
+        index: "/chooseTime",
     },
     {
         icon: "Histogram",

@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
                 component: Home
             },
             {
-                path: '/choose',
+                path: '/chooseIcon',
                 component: () => import('../views/chooseIcon/index.vue')
             },
             {
@@ -37,8 +37,12 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('../views/progress/index.vue')
             },
             {
-                path: '/timepicker',
+                path: '/chooseTime',
                 component: () => import('../views/chooseTime/index.vue')
+            },
+            {
+                path: '/chooseCity',
+                component: () => import('../views/chooseCity/index.vue')
             }
         ]
     },

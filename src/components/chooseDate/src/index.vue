@@ -39,8 +39,10 @@ const endDisabledDate = (date: Date) => {
 
 const emits = defineEmits(['startChange', 'endChange'])
 
+// 监听开始日期选择
 watch(() => startDate.value, val => {
     if (!val) {
+        endDate.value = null
         endDateDisabled.value = true
     } else {
         emits('startChange', val)
@@ -48,6 +50,7 @@ watch(() => startDate.value, val => {
     }
 })
 
+// 监听结束日期选择
 watch(() => endDate.value, val => {
     if (val) {
         emits('endChange', {
