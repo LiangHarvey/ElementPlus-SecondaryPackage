@@ -10,9 +10,10 @@ import progress from './progress/index.ts'
 import chooseTime from './chooseTime/index.ts'
 import chooseDate from './chooseDate/index.ts'
 import chooseCity from './chooseCity/index.ts'
+import form from './form/index.ts'
 
 // 哪些install函数需要被use
-export const components = [chooseArea, chooseIcon, trend, notification, list, menu, progress, chooseTime, chooseDate, chooseCity]
+export const components = [chooseArea, chooseIcon, trend, notification, list, menu, progress, chooseTime, chooseDate, chooseCity, form]
 
 // 去使用每个组件中的installapp
 export default {

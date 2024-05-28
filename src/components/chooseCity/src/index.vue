@@ -52,7 +52,7 @@ const clickProvince = (item: string) => {
     emits('changeProvince', item)
 }
 
-// 选择器搜索
+// 选择器搜索方法
 const filterMethod = (val: string) => {
     let values = Object.values(cities).flat(2)
     if (!val) {
