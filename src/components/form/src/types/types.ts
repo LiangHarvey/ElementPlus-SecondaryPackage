@@ -62,6 +62,7 @@ export interface ValidateFieldCallback {
   (message?: string, invalidFields?: ValidateFieldsError): void,
 }
 
+// el-form实例类型
 export interface FormInstance {
   registerLabelWidth(width: number, oldWidth: number): void,
   deregisterLabelWidth(width: number): void,

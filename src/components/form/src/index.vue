@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { PropType, ref, onMounted } from "vue"
 import cloneDeep from 'lodash/cloneDeep'
-import { FormOptions } from './types/types.ts'
+import { FormInstance, FormOptions } from './types/types.ts'
 import './style/index.scss'
 
 const props = defineProps({
@@ -9,9 +9,14 @@ const props = defineProps({
     options: {
         type: Array as PropType<FormOptions[]>,
         required: true
+    },
+    httpRequest: {
+        type: Function
     }
 })
 
+// el-form实例
+const refForm = ref<FormInstance | null>(null)
 // 整体表单数据对象
 const model = ref({})
 // 整体表单验证规则
@@ -37,7 +42,7 @@ onMounted(() => {
 })
 
 // 上传组件
-const emits = defineEmits(['on-preview', 'on-remove', 'on-success', 'on-error', 'on-progress', 'on-change', 'before-upload', 'before-remove', 'http-request'])
+const emits = defineEmits(['on-preview', 'on-remove', 'on-success', 'on-error', 'on-progress', 'on-change', 'on-exceed', 'before-upload', 'before-remove'])
 
 const onPreview = (file: any) => {
     emits('on-preview', { file })
@@ -63,6 +68,10 @@ const onChange = (file: any, fileList: any) => {
     emits('on-change', { file, fileList })
 }
 
+const onExceed = (files: any, uploadFiles: any) => {
+    emits('on-exceed', { files, uploadFiles })
+}
+
 const beforeUpload = (rawFile: any) => {
     emits('before-upload', { rawFile })
 }
@@ -71,13 +80,10 @@ const beforeRemove = (uploadFile: any, uploadFiles: any) => {
     emits('before-remove', { uploadFile, uploadFiles })
 }
 
-const httpRequest = (options: any) => {
-    emits('http-request', { options })
-}
 </script>
 
 <template>
-    <el-form v-if="model" :model="model" :rules="rules" :validate-on-rule-change="false" v-bind="$attrs">
+    <el-form ref="refForm" v-if="model" :model="model" :rules="rules" :validate-on-rule-change="false" v-bind="$attrs">
         <template v-for="(item, index) in options" :key="index">
             <!-- 无childre -->
             <el-form-item v-if="!item.children || !item.children.length" :prop="item.prop" :label="item.label">
@@ -87,8 +93,8 @@ const httpRequest = (options: any) => {
                 <!-- 上传组件 -->
                 <el-upload v-else v-bind="item.uploadAttrs" class="m-upload" :on-preview="onPreview"
                     :on-remove="onRemove" :on-success="onSuccess" :on-error="onError" :on-progress="onProgress"
-                    :on-change="onChange" :before-upload="beforeUpload" :before-remove="beforeRemove"
-                    :http-request="httpRequest">
+                    :on-change="onChange" :on-exceed="onExceed" :before-upload="beforeUpload"
+                    :before-remove="beforeRemove" :http-request="httpRequest">
                     <slot name="uploadArea"></slot>
                     <slot name="uploadTip"></slot>
                 </el-upload>
@@ -103,6 +109,10 @@ const httpRequest = (options: any) => {
                 </component>
             </el-form-item>
         </template>
+        <!-- 操作插槽 -->
+        <el-form-item>
+            <slot name="action" :form="refForm" :model="model"></slot>
+        </el-form-item>
     </el-form>
 
 </template>

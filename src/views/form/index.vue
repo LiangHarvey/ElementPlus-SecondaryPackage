@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { } from "vue"
-import { FormOptions } from '../../components/form/src/types/types.ts'
+import { FormInstance, FormOptions } from '../../components/form/src/types/types.ts'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 let options: FormOptions[] = [
@@ -154,15 +154,16 @@ let options: FormOptions[] = [
         prop: 'upload',
         label: '上传',
         rules: [
-            {
-                required: true,
-                message: '不能为空',
-                trigger: 'blur'
-            }
+            // {
+            //     required: true,
+            //     message: '不能为空',
+            //     trigger: 'blur'
+            // }
         ],
         uploadAttrs: {
-            action: "https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15",
-            multiple: true
+            action: "https://jsonplaceholder.typicode.com/posts/",
+            multiple: true,
+            limit: 3
         }
     }
 ]
@@ -199,6 +200,26 @@ const handleBeforeUpload = (val: any) => {
     console.log('handleBeforeUpload')
     console.log(val)
 }
+
+interface Scope {
+    form: FormInstance,
+    model: any
+}
+
+const submitForm = (scope: Scope) => {
+    scope.form.validate((valid) => {
+        if (valid) {
+            console.log(scope.model)
+            ElMessage.success('提交成功')
+        } else {
+            ElMessage.error('表单填写有误,请检查')
+        }
+    })
+}
+
+const resetForm = (scope: Scope) => {
+    scope.form.resetFields()
+}
 </script>
 
 <template>
@@ -216,6 +237,10 @@ const handleBeforeUpload = (val: any) => {
                 <div style="color: #ccc;font-size: 12px">
                     jpg/png files with a size less than 500KB.
                 </div>
+            </template>
+            <template #action="scope">
+                <el-button type="primary" size="default" @click="submitForm(scope)">提交</el-button>
+                <el-button size="default" @click="resetForm">重置</el-button>
             </template>
         </m-form>
     </div>
