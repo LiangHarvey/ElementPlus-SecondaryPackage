@@ -1,19 +1,12 @@
 <script lang="ts" setup>
 import { ref } from "vue"
-import { FormInstance, FormOptions } from '../../components/form/src/types/types.ts'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { FormInstance, FormOptions } from "../../components/form/src/types/types";
+import { ElMessage } from 'element-plus'
 
-// 解决富文本检验失败方法2 - 自定义校验规则
-// const checkEditor = (rule: any, value: any, callback: any) => {
-//     if (value === '<p><br></p>') {
-//         return callback(new Error('描述不能为空'))
-//     }
-//     if (value === '') {
-//         return callback(new Error('描述不能为空'))
-//     }
-// }
-
-const formRef = ref(null)
+const visible = ref(false)
+const changeVisible = () => {
+    visible.value = true
+}
 
 let options: FormOptions[] = [
     {
@@ -110,7 +103,7 @@ let options: FormOptions[] = [
             {
                 required: true,
                 message: '爱好不能为空',
-                trigger: 'blur'
+                trigger: 'change'
             }
         ],
         children: [
@@ -140,7 +133,7 @@ let options: FormOptions[] = [
             {
                 required: true,
                 message: '性别不能为空',
-                trigger: 'blur'
+                trigger: 'change'
             }
         ],
         children: [
@@ -167,7 +160,7 @@ let options: FormOptions[] = [
         label: '上传',
         rules: [
             {
-                required: true,
+                required: false,
                 message: '不能为空',
                 trigger: 'blur'
             }
@@ -198,82 +191,41 @@ let options: FormOptions[] = [
     }
 ]
 
-// 上传处理函数
-const handleRemove = (file: any, fileList: any) => {
-    console.log('handleRemove')
-    console.log(file, fileList)
-}
-const handlePreview = (file: any) => {
-    console.log('handlePreview')
-    console.log(file)
-}
-const beforeRemove = (val: any) => {
-    console.log('beforeRemove')
-    return ElMessageBox.confirm(`Cancel the transfert of ${val.file.name} ?`)
-}
-const handleExceed = (val: any) => {
-    console.log('handleExceed', val)
-    ElMessage.warning(
-        `The limit is 3, you selected ${val.files.length
-        } files this time, add up to ${val.files.length + val.fileList.length} totally`
-    )
-}
-const handleSuccess = (val: any) => {
-    console.log('success')
-    console.log(val)
-}
-const handleChange = (val: any) => {
-    console.log('change')
-    console.log(val)
-}
-const handleBeforeUpload = (val: any) => {
-    console.log('handleBeforeUpload')
-    console.log(val)
-}
-
-interface Scope {
-    form: FormInstance,
-    model: any,
-}
-
-const submitForm = (scope: Scope) => {
-    scope.form.validate((valid) => {
+const confirm = (form: FormInstance) => {
+    let validate = form.validate()
+    validate((valid: any) => {
         if (valid) {
-            console.log(scope.model)
-            ElMessage.success('提交成功')
+            ElMessage.success('验证成功')
         } else {
-            ElMessage.error('表单填写有误,请检查')
+            ElMessage.success('验证失败')
         }
     })
 }
 
-const resetForm = () => {
-    formRef.value!.resetFields()
-    // scope.form.resetFields()
+const cancel = (form: FormInstance) => {
+    form.resetFields()
+    visible.value = false
 }
+
+const onSuccess = (val: any) => {
+    console.log('success')
+    console.log(val)
+}
+
 </script>
 
 <template>
-    <div class="">
-        <m-form ref="formRef" :options="options" label-width="100px" label-position="right" @on-change="handleChange"
-            @before-upload="handleBeforeUpload" @on-preview="handlePreview" @on-remove="handleRemove"
-            @before-remove="beforeRemove" @on-success="handleSuccess" @on-exceed="handleExceed">
-            <!-- 上传插槽 -->
-            <template #uploadArea>
-                <div>
-                    <el-button type="primary">Click to upload</el-button>
-                </div>
+    <div>
+        <el-button type="primary" size="default" @click="changeVisible">open</el-button>
+        <m-modal-form :isScroll="true" :onSuccess="onSuccess" :options="options" v-model:visible="visible" title="编辑用户"
+            width="50%">
+            <template #footer="{ form }">
+                <el-button @click="cancel(form)">取消</el-button>
+                <el-button type="primary" @click="confirm(form)">
+                    确认
+                </el-button>
             </template>
-            <template #uploadTip>
-                <div style="color: #ccc;font-size: 12px">
-                    jpg/png files with a size less than 500KB.
-                </div>
-            </template>
-            <template #action="scope">
-                <el-button type="primary" size="default" @click="submitForm(scope)">提交</el-button>
-                <el-button size="default" @click="resetForm">重置</el-button>
-            </template>
-        </m-form>
+        </m-modal-form>
     </div>
 </template>
 
