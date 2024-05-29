@@ -193,7 +193,7 @@ watch(() => valueHtml.value, val => {
                 </component>
             </el-form-item>
         </template>
-        <!-- action操作插槽 -->
+        <!-- 操作插槽 -->
         <el-form-item>
             <slot name="action" :form="refForm" :model="model"></slot>
         </el-form-item>

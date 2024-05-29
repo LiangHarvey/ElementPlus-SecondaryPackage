@@ -73,7 +73,6 @@ const formRef = ref<FormInstance | null>()
                 </template>
                 <template #uploadTip>
                     <slot name="uploadTip"></slot>
-                    
                 </template>
             </m-form>
         </template>

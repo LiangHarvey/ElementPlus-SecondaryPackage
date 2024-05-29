@@ -219,6 +219,7 @@ const onSuccess = (val: any) => {
         <el-button type="primary" size="default" @click="changeVisible">open</el-button>
         <m-modal-form :isScroll="true" :onSuccess="onSuccess" :options="options" v-model:visible="visible" title="编辑用户"
             width="50%">
+            <!-- 上传插槽 -->
             <template #uploadArea>
                 <div>
                     <el-button type="primary">Click to upload</el-button>
