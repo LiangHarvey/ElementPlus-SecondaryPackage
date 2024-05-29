@@ -68,14 +68,12 @@ const formRef = ref<FormInstance | null>()
                 @before-remove="beforeRemove" @on-success="onSuccess" @on-exceed="onExceed">
                 <!-- 上传组件插槽 -->
                 <template #uploadArea>
-                    <div>
-                        <el-button type="primary">Click to upload</el-button>
-                    </div>
+                    <slot name="uploadArea"></slot>
+
                 </template>
                 <template #uploadTip>
-                    <div style="color: #ccc;font-size: 12px">
-                        jpg/png files with a size less than 500KB.
-                    </div>
+                    <slot name="uploadTip"></slot>
+                    
                 </template>
             </m-form>
         </template>

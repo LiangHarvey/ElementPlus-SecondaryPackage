@@ -219,6 +219,16 @@ const onSuccess = (val: any) => {
         <el-button type="primary" size="default" @click="changeVisible">open</el-button>
         <m-modal-form :isScroll="true" :onSuccess="onSuccess" :options="options" v-model:visible="visible" title="编辑用户"
             width="50%">
+            <template #uploadArea>
+                <div>
+                    <el-button type="primary">Click to upload</el-button>
+                </div>
+            </template>
+            <template #uploadTip>
+                <div style="color: #ccc;font-size: 12px">
+                    jpg/png files with a size less than 500KB.
+                </div>
+            </template>
             <template #footer="{ form }">
                 <el-button @click="cancel(form)">取消</el-button>
                 <el-button type="primary" @click="confirm(form)">
