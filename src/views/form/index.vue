@@ -15,6 +15,14 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 
 const formRef = ref(null)
 
+// 测试自定义校验规则
+const validatePass = (rule: any, value: any, callback: any) => {
+    if (value === '') {
+        callback(new Error('测试自定义校验规则|不能为空'))
+        console.log('测试自定义校验规则')
+    }
+}
+
 let options: FormOptions[] = [
     {
         type: 'input',
@@ -25,7 +33,7 @@ let options: FormOptions[] = [
         placeholder: '用户名长度2-6',
         rules: [
             {
-                required: true,
+                required: false,
                 message: '用户名不能为空',
                 trigger: 'blur'
             },
@@ -33,6 +41,10 @@ let options: FormOptions[] = [
                 min: 2,
                 max: 6,
                 message: '用户名长度2-6',
+                trigger: 'blur'
+            },
+            {
+                validator: validatePass,
                 trigger: 'blur'
             }
         ],

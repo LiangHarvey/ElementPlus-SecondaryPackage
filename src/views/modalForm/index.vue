@@ -8,6 +8,8 @@ const changeVisible = () => {
     visible.value = true
 }
 
+
+
 let options: FormOptions[] = [
     {
         type: 'input',
@@ -18,7 +20,7 @@ let options: FormOptions[] = [
         placeholder: '用户名长度2-6',
         rules: [
             {
-                required: true,
+                required: false,
                 message: '用户名不能为空',
                 trigger: 'blur'
             },

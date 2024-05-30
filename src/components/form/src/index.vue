@@ -45,7 +45,7 @@ function getFormData() {
     return model.value
 }
 
-// 向外暴露方法
+// 向外暴露方法-暴露elementplus的form实例的方法
 defineExpose({
     resetFields,
     validate,
@@ -183,7 +183,7 @@ watch(() => valueHtml.value, val => {
                         :defaultConfig="editorConfig" :mode="mode" @onCreated="handleCreated" />
                 </div>
             </el-form-item>
-            <!-- 有childre -->
+            <!-- 有childre-还有子组件-多选框下拉框 -->
             <el-form-item v-if="item.children && item.children.length" :prop="item.prop" :label="item.label">
                 <component v-model="model[item.prop!]" v-bind="item.attrs" :placeholder="item.placeholder"
                     :is='`el-${item.type}`'>
