@@ -47,10 +47,31 @@ const props = defineProps({
     editRowIndex: {
         type: String,
         default: ''
+    },
+    currentPage: {
+        type: Number,
+        default: 1
+    },
+    pageSize: {
+        type: Number,
+        default: 10
+    },
+    pageSizes: {
+        type: Array as PropType<number[]>,
+        default: [10, 20, 30]
+    },
+    total: {
+        type: Number,
+        default: 100
+    },
+    // 分页组件排列方式
+    paginationAlign: {
+        type: String as PropType<'left' | 'center' | 'right'>,
+        default: 'center'
     }
 })
 
-const emits = defineEmits(['confirm', 'cancel'])
+const emits = defineEmits(['confirm', 'cancel', 'update:editRowIndex', 'pageSizeChange', 'currentPageChange'])
 
 // 通过计算属性来区别出非操作项列
 const tableOptions = computed(() => props.options.filter(item => !item.action))
@@ -112,20 +133,26 @@ watch(() => props.editRowIndex, val => {
 
 // 初始化表格数据-给拷贝的表格数据添加新的属性
 onMounted(() => {
-    tableData.value.forEach(item => {
-        // 代表当前是否是可编辑状态
-        item.rowEdit = false
-    })
+    if (tableData.value && tableData.value.length) {
+        tableData.value.forEach(item => {
+            // 代表当前是否是可编辑状态
+            item.rowEdit = false
+        })
+    }
+
 })
 
+// 子组件传了个默认值 'edit'
+const editRowIndexTemp = props.editRowIndex
 // 当table中某一行被点击时会触发该事件
 const rowClick = (row: any, column: any) => {
-    console.log(column);
+    // console.log(column);
     // 判断点击的是否是操作项列的内容
     if (column.label === actionOptions.value?.label) {
         // 表格组件开启了行可编辑
-        // todo：cloneEditRowIndex.value === props.editRowIndex 不管是编辑还是删除都是true
-        if (props.isEditRow && cloneEditRowIndex.value === props.editRowIndex) {
+        // todo：cloneEditRowIndex.value === props.editRowIndex 不管是编辑还是删除都是true。解决：使用一个常量存储props.editRowIndex，这样就不会因为父组件传过来的editRowIndex，子组件的props.editRowIndex也同步变化，最后始终为true
+        // props.xxx 也会跟着 父组件传递给子组件的xxx，同步变化---vue默认
+        if (props.isEditRow && cloneEditRowIndex.value === editRowIndexTemp) {
             // 设置某一行的可编辑状态
             // row是行的数据，tableData中的每个item
             row.rowEdit = !row.rowEdit
@@ -135,9 +162,39 @@ const rowClick = (row: any, column: any) => {
                     item.rowEdit = false
                 }
             })
+            // 重置按钮标识
+            if (!row.rowEdit) {
+                emits('update:editRowIndex', '')
+            }
         }
     }
 }
+
+// 分页组件
+const currentPage = ref<number>(props.currentPage)
+const pageSize = ref<number>(props.pageSize)
+const pageSizes = ref<number[]>(props.pageSizes)
+
+// 一页显示多少条改变
+const handleSizeChange = (pageSize: number) => {
+    console.log(pageSize);
+    emits('pageSizeChange', pageSize)
+}
+// 页码数改变
+const handleCurrentChange = (currentPage: number) => {
+    console.log(currentPage);
+    emits('currentPageChange', currentPage)
+}
+
+const paginationJustifyContent = computed(() => {
+    if (props.paginationAlign === 'left') {
+        return 'flex-start'
+    } else if (props.paginationAlign === 'center') {
+        return 'center'
+    } else if (props.paginationAlign === 'right') {
+        return 'flex-end'
+    }
+})
 
 </script>
 
@@ -159,7 +216,7 @@ const rowClick = (row: any, column: any) => {
                             <div style="display: flex;">
                                 <el-input size="small" v-model="scope.row[item.prop!]"></el-input>
                                 <!-- 自定义编辑单元格的勾叉区域内容 -->
-                                <div @click="clickEditCell">
+                                <div @click.stop="clickEditCell">
                                     <slot name="editCell" v-if="$slots.editCell" :scope="scope"></slot>
                                     <template v-else>
                                         <div class="icons">
@@ -197,7 +254,12 @@ const rowClick = (row: any, column: any) => {
             </template>
         </el-table-column>
     </el-table>
-
+    <!-- 分页组件 -->
+    <div class="pagination" :style="{ justifyContent: paginationJustifyContent }">
+        <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="pageSizes"
+            small="small" layout="total, sizes, prev, pager, next, jumper" :total="total"
+            @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+    </div>
 </template>
 
 <style lang="scss" scoped>
@@ -225,5 +287,10 @@ const rowClick = (row: any, column: any) => {
         color: green;
         cursor: pointer;
     }
+}
+
+.pagination {
+    margin-top: 16px;
+    display: flex;
 }
 </style>

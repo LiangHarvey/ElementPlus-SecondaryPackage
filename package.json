@@ -22,8 +22,11 @@
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
+    "@types/mockjs": "^1.0.10",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "axios": "^1.7.2",
+    "mockjs": "^1.1.0",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vue-tsc": "^2.0.6"

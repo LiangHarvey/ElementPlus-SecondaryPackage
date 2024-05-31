@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { ref } from "vue"
-import { TableOptions } from "../../components/table/src/types";
+import { ref, onMounted } from "vue"
+import { TableOptions } from "../../components/table/src/types"
+import axios from 'axios'
 
 // 表格配置项
 let options: TableOptions[] = [
@@ -38,28 +39,28 @@ interface TableData {
 
 // 表格数据
 const tableData = ref<TableData[]>()
-tableData.value = [
-    {
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-04',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-]
+// tableData.value = [
+//     {
+//         date: '2016-05-03',
+//         name: 'Tom',
+//         address: 'No. 189, Grove St, Los Angeles',
+//     },
+//     {
+//         date: '2016-05-02',
+//         name: 'Tom',
+//         address: 'No. 189, Grove St, Los Angeles',
+//     },
+//     {
+//         date: '2016-05-04',
+//         name: 'Tom',
+//         address: 'No. 189, Grove St, Los Angeles',
+//     },
+//     {
+//         date: '2016-05-01',
+//         name: 'Tom',
+//         address: 'No. 189, Grove St, Los Angeles',
+//     },
+// ]
 // 表格数据
 // setTimeout(() => {
 //     console.log('父组件变化');
@@ -101,7 +102,6 @@ const editRowIndex = ref<string>('edit')
 
 // 操作项列
 const handleEdit = (scope: any) => {
-    console.log(scope)
     editRowIndex.value = 'edit'
 }
 
@@ -109,15 +109,44 @@ const handleDelete = () => {
     editRowIndex.value = 'delete'
 }
 
+// 分页
+const currentPage = ref<number>(1)
+const pageSize = ref<number>(10)
+const total = ref<number>()
 
+const getData = () => {
+    axios.post('/api/list', {
+        current: currentPage.value,
+        pageSize: pageSize.value
+    }).then(res => {
+        tableData.value = res.data.data.rows
+        total.value = res.data.data.total
+    })
+}
+
+onMounted(() => {
+    getData()
+})
+
+const pageSizeChange = (val: number) => {
+    pageSize.value = val
+    getData()
+}
+
+const currentPageChange = (val: number) => {
+    currentPage.value = val
+    getData()
+}
 
 
 </script>
 
 <template>
     <div class="">
-        <m-table @confirm="handleCheck" @cancel="handleClose" :editRowIndex="editRowIndex" isEditRow :options="options"
-            :data="tableData" :loading="true" elementLoadingText="加载中" elementLoadingBackground="rgba(0,0,0,0.4)">
+        <m-table paginationAlign="left" @pageSizeChange="pageSizeChange" @currentPageChange="currentPageChange" :currentPage="currentPage"
+            :pageSize="pageSize" :total="total" @confirm="handleCheck" @cancel="handleClose"
+            v-model:editRowIndex="editRowIndex" isEditRow :options="options" :data="tableData" :loading="true"
+            elementLoadingText="加载中" elementLoadingBackground="rgba(0,0,0,0.4)">
             <!-- 自定义模板插槽 -->
             <template #date="{ scope }">
                 <el-icon-timer />
