@@ -177,12 +177,10 @@ const pageSizes = ref<number[]>(props.pageSizes)
 
 // 一页显示多少条改变
 const handleSizeChange = (pageSize: number) => {
-    console.log(pageSize);
     emits('pageSizeChange', pageSize)
 }
 // 页码数改变
 const handleCurrentChange = (currentPage: number) => {
-    console.log(currentPage);
     emits('currentPageChange', currentPage)
 }
 

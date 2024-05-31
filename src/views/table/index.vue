@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted } from "vue"
+import { ref, onBeforeMount } from "vue"
 import { TableOptions } from "../../components/table/src/types"
 import axios from 'axios'
 
@@ -114,8 +114,8 @@ const currentPage = ref<number>(1)
 const pageSize = ref<number>(10)
 const total = ref<number>()
 
-const getData = () => {
-    axios.post('/api/list', {
+const getData = async () => {
+    await axios.post('/api/list', {
         current: currentPage.value,
         pageSize: pageSize.value
     }).then(res => {
@@ -124,7 +124,7 @@ const getData = () => {
     })
 }
 
-onMounted(() => {
+onBeforeMount(() => {
     getData()
 })
 
@@ -143,8 +143,8 @@ const currentPageChange = (val: number) => {
 
 <template>
     <div class="">
-        <m-table paginationAlign="left" @pageSizeChange="pageSizeChange" @currentPageChange="currentPageChange" :currentPage="currentPage"
-            :pageSize="pageSize" :total="total" @confirm="handleCheck" @cancel="handleClose"
+        <m-table paginationAlign="left" @pageSizeChange="pageSizeChange" @currentPageChange="currentPageChange"
+            :currentPage="currentPage" :pageSize="pageSize" :total="total" @confirm="handleCheck" @cancel="handleClose"
             v-model:editRowIndex="editRowIndex" isEditRow :options="options" :data="tableData" :loading="true"
             elementLoadingText="加载中" elementLoadingBackground="rgba(0,0,0,0.4)">
             <!-- 自定义模板插槽 -->

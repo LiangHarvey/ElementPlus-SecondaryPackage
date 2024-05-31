@@ -10,7 +10,6 @@ import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { IEditorConfig } from '@wangeditor/editor'
 
 
-
 const props = defineProps({
     // 表单配置项
     options: {

@@ -13,9 +13,10 @@ import chooseCity from './chooseCity/index.ts'
 import form from './form/index.ts'
 import modalForm from './modalForm/index.ts'
 import table from './table/index.ts'
+import calendar from './calendar/index.ts'
 
 // 哪些install函数需要被use
-export const components = [chooseArea, chooseIcon, trend, notification, list, menu, progress, chooseTime, chooseDate, chooseCity, form, modalForm, table]
+export const components = [chooseArea, chooseIcon, trend, notification, list, menu, progress, chooseTime, chooseDate, chooseCity, form, modalForm, table, calendar]
 
 // 去使用每个组件中的installapp
 export default {
