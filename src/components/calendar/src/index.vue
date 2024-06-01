@@ -54,6 +54,15 @@ const props = defineProps({
     events: {
         type: Array as PropType<EventItem[]>,
         default: []
+    },
+    // 日历是否显示结束时间
+    displayEventEnd: {
+        type: Boolean,
+        default: false
+    },
+    // 自定义显示日程UI
+    eventContent: {
+        type: Function
     }
 })
 
@@ -93,6 +102,9 @@ const renderCalendar = () => {
             eventClick(info: EventClickArg) {
                 emits("eventClick", info)
             },
+            displayEventEnd: props.displayEventEnd,
+            // 自定义显示日程UI
+            eventContent: props.eventContent
         })
         calendar.value.render()
     }
@@ -102,6 +114,7 @@ onMounted(() => {
     renderCalendar()
 })
 
+// 监听
 watch(() => props.events, val => {
     console.log('val', val)
     renderCalendar()

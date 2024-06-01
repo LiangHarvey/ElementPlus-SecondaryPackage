@@ -110,11 +110,12 @@ const data = [
     </el-menu> -->
     <!-- 使用二次封装的menu组件  m-menu -->
     <m-menu :data="data" defaultActive="$router.path" router :collapse="collapse"
-        class="el-menu-vertical-demo"></m-menu>
+        :class="{ 'el-menu-vertical-demo': !collapse }"></m-menu>
 </template>
 
 <style lang="scss" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
+    // width: auto;
     width: 200px;
 }
 </style>

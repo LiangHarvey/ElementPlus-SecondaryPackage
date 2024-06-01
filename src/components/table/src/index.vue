@@ -200,6 +200,7 @@ const paginationJustifyContent = computed(() => {
     <el-table :data="tableData" border stripe v-loading="isLoading" :element-loading-text="elementLoadingText"
         :element-loading-spinner="elementLoadingIcon" :element-loading-svg-view-box="elementLoadingSvgViewBox"
         :element-loading-background="elementLoadingBackground" @row-click="rowClick">
+        <!-- 非操作项列 -->
         <template v-for="(item, index) in tableOptions" :key="index">
             <el-table-column :prop="item.prop" :label="item.label" :align="item.align" :width="item.width">
                 <template #default="scope">

@@ -10,7 +10,7 @@ const isCollapse = ref(false)
 <template>
     <el-container>
         <el-aside width="auto">
-            <nav-aside :collapse="isCollapse"></nav-aside>
+            <nav-aside :collapse="isCollapse" width="auto"></nav-aside>
         </el-aside>
         <el-container>
             <el-header>

@@ -74,7 +74,8 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .menu {
-    width: 400px;
+    // width: 200px;
+    width: auto;
 
     svg {
         margin-right: 5px;
