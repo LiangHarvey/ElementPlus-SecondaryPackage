@@ -7,5 +7,5 @@
 
 <style>
 @import './style/base.scss';
-@import './style//ui.scss'
+/* @import './style//ui.scss'; */
 </style>
